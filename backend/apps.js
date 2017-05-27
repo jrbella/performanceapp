@@ -2,19 +2,27 @@ var express = require('express');
 var database = require('./database.js')
 var app = express();
 var port = process.env.PORT || 1337;
+var path = require('path');
 //Set up to render the html correctly from the html folder
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname.replace('backend', 'frontend') + '/html');
 app.use(express.static(__dirname.replace('backend', 'frontend')));
 
+
+console.log("Carry on executing");
 var bodyParser = require('body-parser');
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded({ extended: true }) );
+var path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req,res){
-  console.log('app root/ requested');
-  return res.status(200).send("hello worlds");
-});
+
+//Routes
+
+app.get('/', function (req, res) {
+  
+  res.sendFile(path.join(__dirname + '/frontend/html/index.html'));
+})
 
 
 app.post('/addTrain', function(req,res){
@@ -30,9 +38,9 @@ app.post('/addTrain', function(req,res){
 
 
 
-app.get('/trainList', function(req,res){
-  console.log('app / trains requested');
-  return res.render('trainList.html');
+app.get('frontend/index', function(req,res){
+  console.log('app / hello-world requested');
+  return res.render('index.html');
 });
 
 app.get('/trainList2', function(req,res){
